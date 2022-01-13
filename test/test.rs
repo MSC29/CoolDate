@@ -1,10 +1,7 @@
-// extern crate rary; // May be required for Rust 2015 edition or earlier
+// use lib::entities::anniversary::Anniversary;
 
 fn main() {
-    lib::public_function();
-
-    // Error! `private_function` is private
-    //lib::private_function();
-
-    lib::indirect_access();
+    let date: &str = "1989-06-19T00:00:00.000Z";
+    let anniversaries = lib::find_anniversaries_future(date);
+    anniversaries.for_each(|a| println!(format!("{}: {}", a.name, a.date)));
 }
