@@ -1,12 +1,12 @@
-# CoolDate
+# Funniversaries
 
-Cool Date rust lib
+Fun Anniversaries generator library in Rust
 
 ## What is this?
 
 ## What does it do?
 
-#### default: future cool dates
+#### default: future anniversaries
 input a date, find next anniversaries
 e.g. birth day & find 4444th day, after today if past date, after date if future date
 e.g. couple together date & find 666th day together, after today if past date, after date if future date
@@ -42,6 +42,6 @@ cargo build --release
 ### create testable executable
 
 ```rust
-cd test && rustc test.rs --extern lib=../target/release/libfoo.rlib && cd ..
+cd test && rustc test.rs --extern lib=../target/release/libfunniversaries.rlib && cd ..
 ./test/test
 ```

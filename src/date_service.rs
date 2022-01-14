@@ -4,9 +4,9 @@ use crate::entities::anniversary::Anniversary;
 
 pub struct DateService{
     pub now: DateTime<Utc>,
-    pub cool_seconds: [u32; 1],
-    pub cool_days: [u32; 3],
-    pub cool_weeks: [u32; 2],
+    pub fun_seconds: [u32; 1],
+    pub fun_days: [u32; 3],
+    pub fun_weeks: [u32; 2],
 }
 
 impl DateService{
@@ -43,7 +43,7 @@ impl DateService{
     pub fn create_seconds_anniversaries_from_date(&self, date: DateTime<Utc>) -> Vec<Anniversary> {
         let mut aniversaries: Vec<Anniversary> = vec![];
 
-        for sec in self.cool_seconds {
+        for sec in self.fun_seconds {
             let duration = Duration::seconds(sec.into());
             let date = date.checked_add_signed(duration);
             let annif = Anniversary::new_seconds(sec, date.unwrap());
@@ -56,7 +56,7 @@ impl DateService{
     pub fn create_days_anniversaries_from_date(&self, date: DateTime<Utc>) -> Vec<Anniversary> {
         let mut aniversaries: Vec<Anniversary> = vec![];
 
-        for day in self.cool_days {
+        for day in self.fun_days {
             let duration = Duration::days(day.into());
             let date = date.checked_add_signed(duration);
             let annif = Anniversary::new_days(day, date.unwrap());
@@ -69,7 +69,7 @@ impl DateService{
     pub fn create_weeks_anniversaries_from_date(&self, date: DateTime<Utc>) -> Vec<Anniversary> {
         let mut aniversaries: Vec<Anniversary> = vec![];
 
-        for week in self.cool_weeks {
+        for week in self.fun_weeks {
             let duration = Duration::weeks(week.into());
             let date = date.checked_add_signed(duration);
             let annif = Anniversary::new_weeks(week, date.unwrap());
@@ -86,17 +86,17 @@ mod tests {
     use crate::entities::anniversary::Anniversary;
     use crate::date_service::DateService;
 
-    const TEST_COOL_SECONDS: [u32; 1] = [
+    const TEST_FUN_SECONDS: [u32; 1] = [
         1_000_000_000
     ];
 
-    const TEST_COOL_DAYS: [u32; 3] = [
+    const TEST_FUN_DAYS: [u32; 3] = [
         666,
         1_000,
         10_000
     ];
 
-    const TEST_COOL_WEEKS: [u32; 2] = [
+    const TEST_FUN_WEEKS: [u32; 2] = [
         666,
         1_000
     ];
@@ -107,9 +107,9 @@ mod tests {
         let now: DateTime<Utc> = Utc::now();
         let date_service = DateService{
             now, 
-            cool_seconds: TEST_COOL_SECONDS, 
-            cool_days: TEST_COOL_DAYS, 
-            cool_weeks: TEST_COOL_WEEKS, 
+            fun_seconds: TEST_FUN_SECONDS, 
+            fun_days: TEST_FUN_DAYS, 
+            fun_weeks: TEST_FUN_WEEKS, 
         };
 
         //2010-01-02T03:04:05
@@ -131,9 +131,9 @@ mod tests {
         let now: DateTime<Utc> = Utc::now();
         let date_service = DateService{
             now, 
-            cool_seconds: TEST_COOL_SECONDS, 
-            cool_days: TEST_COOL_DAYS, 
-            cool_weeks: TEST_COOL_WEEKS, 
+            fun_seconds: TEST_FUN_SECONDS, 
+            fun_days: TEST_FUN_DAYS, 
+            fun_weeks: TEST_FUN_WEEKS, 
         };
 
         //2010-01-02T03:04:05
@@ -161,9 +161,9 @@ mod tests {
         let now: DateTime<Utc> = Utc::now();
         let date_service = DateService{
             now, 
-            cool_seconds: TEST_COOL_SECONDS, 
-            cool_days: TEST_COOL_DAYS, 
-            cool_weeks: TEST_COOL_WEEKS, 
+            fun_seconds: TEST_FUN_SECONDS, 
+            fun_days: TEST_FUN_DAYS, 
+            fun_weeks: TEST_FUN_WEEKS, 
         };
 
         //2010-01-02T03:04:05
@@ -188,9 +188,9 @@ mod tests {
         let date_now = Utc.ymd(2020, 1, 2).and_hms(3, 4, 5);
         let date_service = DateService{
             now: date_now, 
-            cool_seconds: TEST_COOL_SECONDS, 
-            cool_days: TEST_COOL_DAYS, 
-            cool_weeks: TEST_COOL_WEEKS, 
+            fun_seconds: TEST_FUN_SECONDS, 
+            fun_days: TEST_FUN_DAYS, 
+            fun_weeks: TEST_FUN_WEEKS, 
         };
         let mut anniversaries: Vec<Anniversary> = vec![];
         
@@ -235,9 +235,9 @@ mod tests {
         let date_now = Utc.ymd(2020, 1, 2).and_hms(3, 4, 5);
         let date_service = DateService{
             now: date_now, 
-            cool_seconds: TEST_COOL_SECONDS, 
-            cool_days: TEST_COOL_DAYS, 
-            cool_weeks: TEST_COOL_WEEKS, 
+            fun_seconds: TEST_FUN_SECONDS, 
+            fun_days: TEST_FUN_DAYS, 
+            fun_weeks: TEST_FUN_WEEKS, 
         };
         let mut anniversaries: Vec<Anniversary> = vec![];
         
@@ -279,9 +279,9 @@ mod tests {
         let date_now = Utc.ymd(2020, 1, 2).and_hms(3, 4, 5);
         let date_service = DateService{
             now: date_now, 
-            cool_seconds: TEST_COOL_SECONDS, 
-            cool_days: TEST_COOL_DAYS, 
-            cool_weeks: TEST_COOL_WEEKS, 
+            fun_seconds: TEST_FUN_SECONDS, 
+            fun_days: TEST_FUN_DAYS, 
+            fun_weeks: TEST_FUN_WEEKS, 
         };
         
         //2010-01-02T03:04:05
@@ -322,9 +322,9 @@ mod tests {
         let now: DateTime<Utc> = Utc::now();
         let date_service = DateService{
             now, 
-            cool_seconds: TEST_COOL_SECONDS, 
-            cool_days: TEST_COOL_DAYS, 
-            cool_weeks: TEST_COOL_WEEKS, 
+            fun_seconds: TEST_FUN_SECONDS, 
+            fun_days: TEST_FUN_DAYS, 
+            fun_weeks: TEST_FUN_WEEKS, 
         };
         let date_now = Utc.ymd(2020, 1, 2).and_hms(3, 4, 5);
         
@@ -345,9 +345,9 @@ mod tests {
         let now: DateTime<Utc> = Utc::now();
         let date_service = DateService{
             now, 
-            cool_seconds: TEST_COOL_SECONDS, 
-            cool_days: TEST_COOL_DAYS, 
-            cool_weeks: TEST_COOL_WEEKS, 
+            fun_seconds: TEST_FUN_SECONDS, 
+            fun_days: TEST_FUN_DAYS, 
+            fun_weeks: TEST_FUN_WEEKS, 
         };
         let date_now = Utc.ymd(2020, 1, 2).and_hms(3, 4, 5);
         
