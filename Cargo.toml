@@ -13,7 +13,7 @@ keywords = ["date", "time", "calendar", "fun", "anniversary"]
 categories = ["date-and-time"]
 
 [lib]
-name = "funniversaries"
+name = "funniversaries_lib"
 path = "src/lib.rs"
 edition = "2018"
 crate-type = ["lib"]
