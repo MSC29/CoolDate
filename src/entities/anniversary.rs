@@ -1,7 +1,6 @@
 use chrono::{DateTime, Utc};
-use serde::Serialize;
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone)]
 pub struct Anniversary {
     pub name: String,
     pub count: u32,
