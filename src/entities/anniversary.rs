@@ -4,13 +4,13 @@ use serde::Serialize;
 #[derive(Debug, Clone, Serialize)]
 pub struct Anniversary {
     pub name: String,
-    pub count: u64,
+    pub count: i64,
     pub unit: String,
     pub date: DateTime<Utc>,
 }
 
 impl Anniversary {
-    pub fn new_seconds(count: u64, date: DateTime<Utc>) -> Anniversary {
+    pub fn new_seconds(count: i64, date: DateTime<Utc>) -> Anniversary {
         Anniversary {
             count,
             date,
@@ -19,7 +19,7 @@ impl Anniversary {
         }
     }
 
-    pub fn new_days(count: u64, date: DateTime<Utc>) -> Anniversary {
+    pub fn new_days(count: i64, date: DateTime<Utc>) -> Anniversary {
         Anniversary {
             count,
             date,
@@ -28,7 +28,7 @@ impl Anniversary {
         }
     }
 
-    pub fn new_weeks(count: u64, date: DateTime<Utc>) -> Anniversary {
+    pub fn new_weeks(count: i64, date: DateTime<Utc>) -> Anniversary {
         Anniversary {
             count,
             date,
