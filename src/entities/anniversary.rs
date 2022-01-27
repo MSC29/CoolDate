@@ -3,13 +3,13 @@ use chrono::{DateTime, Utc};
 #[derive(Debug, Clone)]
 pub struct Anniversary {
     pub name: String,
-    pub count: u32,
+    pub count: u64,
     pub unit: String,
     pub date: DateTime<Utc>,
 }
 
 impl Anniversary {
-    pub fn new_seconds(count: u32, date: DateTime<Utc>) -> Anniversary {
+    pub fn new_seconds(count: u64, date: DateTime<Utc>) -> Anniversary {
         Anniversary {
             count,
             date,
@@ -18,7 +18,7 @@ impl Anniversary {
         }
     }
 
-    pub fn new_days(count: u32, date: DateTime<Utc>) -> Anniversary {
+    pub fn new_days(count: u64, date: DateTime<Utc>) -> Anniversary {
         Anniversary {
             count,
             date,
@@ -27,7 +27,7 @@ impl Anniversary {
         }
     }
 
-    pub fn new_weeks(count: u32, date: DateTime<Utc>) -> Anniversary {
+    pub fn new_weeks(count: u64, date: DateTime<Utc>) -> Anniversary {
         Anniversary {
             count,
             date,

@@ -2,125 +2,140 @@ use chrono::{DateTime, Duration, Utc};
 
 use crate::entities::anniversary::Anniversary;
 
-pub struct DateService{
+pub struct DateService {
     pub now: DateTime<Utc>,
-    pub fun_seconds: [u32; 1],
-    pub fun_days: [u32; 3],
-    pub fun_weeks: [u32; 2],
+    pub fun_seconds: Vec<u64>,
+    pub fun_days: Vec<u64>,
+    pub fun_weeks: Vec<u64>,
 }
 
-impl DateService{
-    pub fn find_anniversaries_from_date(&self, date: DateTime<Utc>, is_past: Option<bool>) -> Vec<Anniversary> {
-        let mut aniversaries: Vec<Anniversary> = vec![];
-        let mut seconds: Vec<Anniversary> = self.create_seconds_anniversaries_from_date(date.clone());
-        aniversaries.append(&mut seconds);
+impl DateService {
+    pub fn find_anniversaries_from_date(
+        &self,
+        date: DateTime<Utc>,
+        is_past: Option<bool>,
+    ) -> Vec<Anniversary> {
+        let mut anniversaries: Vec<Anniversary> = vec![];
+        let mut seconds: Vec<Anniversary> =
+            self.create_seconds_anniversaries_from_date(date.clone());
+        anniversaries.append(&mut seconds);
 
         let mut days: Vec<Anniversary> = self.create_days_anniversaries_from_date(date.clone());
-        aniversaries.append(&mut days);
+        anniversaries.append(&mut days);
 
         let mut weeks: Vec<Anniversary> = self.create_weeks_anniversaries_from_date(date.clone());
-        aniversaries.append(&mut weeks);
+        anniversaries.append(&mut weeks);
 
         if let Some(past) = is_past {
-            aniversaries = self.filter_anniversaries(aniversaries, past);
+            anniversaries = self.filter_anniversaries(anniversaries, past);
         }
 
-        return aniversaries;
+        return anniversaries;
     }
 
-    pub fn filter_anniversaries(&self, aniversaries: Vec<Anniversary>, is_past: bool) -> Vec<Anniversary>{
+    pub fn filter_anniversaries(
+        &self,
+        anniversaries: Vec<Anniversary>,
+        is_past: bool,
+    ) -> Vec<Anniversary> {
         let filtered: Vec<Anniversary>;
-        if is_past == true{
-            filtered = aniversaries.into_iter().filter(|a| a.date.lt(&self.now)).collect();
-        }
-        else{
-            filtered = aniversaries.into_iter().filter(|a| a.date.ge(&self.now)).collect();
+        if is_past == true {
+            filtered = anniversaries
+                .into_iter()
+                .filter(|a| a.date.lt(&self.now))
+                .collect();
+        } else {
+            filtered = anniversaries
+                .into_iter()
+                .filter(|a| a.date.ge(&self.now))
+                .collect();
         }
 
         filtered
     }
 
     pub fn create_seconds_anniversaries_from_date(&self, date: DateTime<Utc>) -> Vec<Anniversary> {
-        let mut aniversaries: Vec<Anniversary> = vec![];
+        let mut anniversaries: Vec<Anniversary> = vec![];
 
-        for sec in self.fun_seconds {
-            let duration = Duration::seconds(sec.into());
+        for sec in self.fun_seconds.iter() {
+            let duration = Duration::seconds(sec.to_owned() as i64);
             let date = date.checked_add_signed(duration);
-            let annif = Anniversary::new_seconds(sec, date.unwrap());
-            aniversaries.push(annif);
+            if let Some(d) = date {
+                let annif = Anniversary::new_seconds(sec.to_owned(), d);
+                anniversaries.push(annif);
+            } else {
+                println!("Overflow calculating seconds from {}", sec);
+            }
         }
 
-        return aniversaries;
+        return anniversaries;
     }
 
     pub fn create_days_anniversaries_from_date(&self, date: DateTime<Utc>) -> Vec<Anniversary> {
-        let mut aniversaries: Vec<Anniversary> = vec![];
+        let mut anniversaries: Vec<Anniversary> = vec![];
 
-        for day in self.fun_days {
-            let duration = Duration::days(day.into());
+        for day in self.fun_days.iter() {
+            let duration = Duration::days(day.to_owned() as i64);
             let date = date.checked_add_signed(duration);
-            let annif = Anniversary::new_days(day, date.unwrap());
-            aniversaries.push(annif);
+            if let Some(d) = date {
+                let annif = Anniversary::new_days(day.to_owned(), d);
+                anniversaries.push(annif);
+            } else {
+                println!("Overflow calculating days from {}", day);
+            }
         }
 
-        return aniversaries;
+        return anniversaries;
     }
 
     pub fn create_weeks_anniversaries_from_date(&self, date: DateTime<Utc>) -> Vec<Anniversary> {
-        let mut aniversaries: Vec<Anniversary> = vec![];
+        let mut anniversaries: Vec<Anniversary> = vec![];
 
-        for week in self.fun_weeks {
-            let duration = Duration::weeks(week.into());
+        for week in self.fun_weeks.iter() {
+            let duration = Duration::weeks(week.to_owned() as i64);
             let date = date.checked_add_signed(duration);
-            let annif = Anniversary::new_weeks(week, date.unwrap());
-            aniversaries.push(annif);
+            if let Some(d) = date {
+                let annif = Anniversary::new_weeks(week.to_owned(), d);
+                anniversaries.push(annif);
+            } else {
+                println!("Overflow calculating weeks from {}", week);
+            }
         }
 
-        return aniversaries;
+        return anniversaries;
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use chrono::{Utc, TimeZone, DateTime};
-    use crate::entities::anniversary::Anniversary;
     use crate::date_service::DateService;
+    use crate::entities::anniversary::Anniversary;
+    use chrono::{DateTime, TimeZone, Utc};
 
-    const TEST_FUN_SECONDS: [u32; 1] = [
-        1_000_000_000
-    ];
-
-    const TEST_FUN_DAYS: [u32; 3] = [
-        666,
-        1_000,
-        10_000
-    ];
-
-    const TEST_FUN_WEEKS: [u32; 2] = [
-        666,
-        1_000
-    ];
+    const TEST_FUN_SECONDS: [u64; 1] = [1_000_000_000];
+    const TEST_FUN_DAYS: [u64; 3] = [666, 1_000, 10_000];
+    const TEST_FUN_WEEKS: [u64; 2] = [666, 1_000];
 
     #[test]
     fn adding_seconds() {
         //given
         let now: DateTime<Utc> = Utc::now();
-        let date_service = DateService{
-            now, 
-            fun_seconds: TEST_FUN_SECONDS, 
-            fun_days: TEST_FUN_DAYS, 
-            fun_weeks: TEST_FUN_WEEKS, 
+        let date_service = DateService {
+            now,
+            fun_seconds: TEST_FUN_SECONDS.to_vec(),
+            fun_days: TEST_FUN_DAYS.to_vec(),
+            fun_weeks: TEST_FUN_WEEKS.to_vec(),
         };
 
         //2010-01-02T03:04:05
         let date_start = Utc.ymd(2010, 1, 2).and_hms(3, 4, 5);
-        
+
         //2041-09-10T04:50:45
         let date_expected_1_000_d_000_000_s = Utc.ymd(2041, 9, 10).and_hms(4, 50, 45);
 
         //when
         let vec = date_service.create_seconds_anniversaries_from_date(date_start);
-       
+
         //then
         assert_eq!(vec[0].date, date_expected_1_000_d_000_000_s);
     }
@@ -129,16 +144,16 @@ mod tests {
     fn adding_days() {
         //given
         let now: DateTime<Utc> = Utc::now();
-        let date_service = DateService{
-            now, 
-            fun_seconds: TEST_FUN_SECONDS, 
-            fun_days: TEST_FUN_DAYS, 
-            fun_weeks: TEST_FUN_WEEKS, 
+        let date_service = DateService {
+            now,
+            fun_seconds: TEST_FUN_SECONDS.to_vec(),
+            fun_days: TEST_FUN_DAYS.to_vec(),
+            fun_weeks: TEST_FUN_WEEKS.to_vec(),
         };
 
         //2010-01-02T03:04:05
         let date_start = Utc.ymd(2010, 1, 2).and_hms(3, 4, 5);
-        
+
         //Sunday, 30 October 2011, 03:04:05
         let date_expected_666_d = Utc.ymd(2011, 10, 30).and_hms(3, 4, 5);
         //Friday, 28 September 2012, 03:04:05
@@ -148,7 +163,7 @@ mod tests {
 
         //when
         let vec = date_service.create_days_anniversaries_from_date(date_start);
-        
+
         //then
         assert_eq!(vec[0].date, date_expected_666_d);
         assert_eq!(vec[1].date, date_expected_1_000_d);
@@ -159,24 +174,24 @@ mod tests {
     fn adding_weeks() {
         //given
         let now: DateTime<Utc> = Utc::now();
-        let date_service = DateService{
-            now, 
-            fun_seconds: TEST_FUN_SECONDS, 
-            fun_days: TEST_FUN_DAYS, 
-            fun_weeks: TEST_FUN_WEEKS, 
+        let date_service = DateService {
+            now,
+            fun_seconds: TEST_FUN_SECONDS.to_vec(),
+            fun_days: TEST_FUN_DAYS.to_vec(),
+            fun_weeks: TEST_FUN_WEEKS.to_vec(),
         };
 
         //2010-01-02T03:04:05
         let date_start = Utc.ymd(2010, 1, 2).and_hms(3, 4, 5);
-        
+
         //Saturday, 8 October 2022, 03:04:05
         let date_expected_666_w = Utc.ymd(2022, 10, 8).and_hms(3, 4, 5);
         //Saturday, 3 March 2029, 03:04:05
         let date_expected_1_000_w = Utc.ymd(2029, 3, 3).and_hms(3, 4, 5);
-        
+
         //when
         let vec = date_service.create_weeks_anniversaries_from_date(date_start);
-        
+
         //then
         assert_eq!(vec[0].date, date_expected_666_w);
         assert_eq!(vec[1].date, date_expected_1_000_w);
@@ -186,14 +201,14 @@ mod tests {
     fn filter_anniversaries_in_future() {
         //given
         let date_now = Utc.ymd(2020, 1, 2).and_hms(3, 4, 5);
-        let date_service = DateService{
-            now: date_now, 
-            fun_seconds: TEST_FUN_SECONDS, 
-            fun_days: TEST_FUN_DAYS, 
-            fun_weeks: TEST_FUN_WEEKS, 
+        let date_service = DateService {
+            now: date_now,
+            fun_seconds: TEST_FUN_SECONDS.to_vec(),
+            fun_days: TEST_FUN_DAYS.to_vec(),
+            fun_weeks: TEST_FUN_WEEKS.to_vec(),
         };
         let mut anniversaries: Vec<Anniversary> = vec![];
-        
+
         //2041-09-10T04:50:45
         let date_expected_1_000_d_000_000_s = Utc.ymd(2041, 9, 10).and_hms(4, 50, 45);
         anniversaries.push(Anniversary::new_seconds(1, date_expected_1_000_d_000_000_s));
@@ -218,10 +233,9 @@ mod tests {
         let date_expected_1_000_w = Utc.ymd(2029, 3, 3).and_hms(3, 4, 5);
         anniversaries.push(Anniversary::new_seconds(1, date_expected_1_000_w));
 
-
         //when
         let vec = date_service.filter_anniversaries(anniversaries, false);
-        
+
         //then
         assert_eq!(vec[0].date, date_expected_1_000_d_000_000_s);
         assert_eq!(vec[1].date, date_expected_10_000_d);
@@ -233,14 +247,14 @@ mod tests {
     fn filter_anniversaries_in_past() {
         //given
         let date_now = Utc.ymd(2020, 1, 2).and_hms(3, 4, 5);
-        let date_service = DateService{
-            now: date_now, 
-            fun_seconds: TEST_FUN_SECONDS, 
-            fun_days: TEST_FUN_DAYS, 
-            fun_weeks: TEST_FUN_WEEKS, 
+        let date_service = DateService {
+            now: date_now,
+            fun_seconds: TEST_FUN_SECONDS.to_vec(),
+            fun_days: TEST_FUN_DAYS.to_vec(),
+            fun_weeks: TEST_FUN_WEEKS.to_vec(),
         };
         let mut anniversaries: Vec<Anniversary> = vec![];
-        
+
         //2041-09-10T04:50:45
         let date_expected_1_000_d_000_000_s = Utc.ymd(2041, 9, 10).and_hms(4, 50, 45);
         anniversaries.push(Anniversary::new_seconds(1, date_expected_1_000_d_000_000_s));
@@ -267,7 +281,7 @@ mod tests {
 
         //when
         let vec = date_service.filter_anniversaries(anniversaries, true);
-        
+
         //then
         assert_eq!(vec[0].date, date_expected_666_d);
         assert_eq!(vec[1].date, date_expected_1_000_d);
@@ -277,19 +291,19 @@ mod tests {
     fn finding_anniversaries_from_date_all() {
         //given
         let date_now = Utc.ymd(2020, 1, 2).and_hms(3, 4, 5);
-        let date_service = DateService{
-            now: date_now, 
-            fun_seconds: TEST_FUN_SECONDS, 
-            fun_days: TEST_FUN_DAYS, 
-            fun_weeks: TEST_FUN_WEEKS, 
+        let date_service = DateService {
+            now: date_now,
+            fun_seconds: TEST_FUN_SECONDS.to_vec(),
+            fun_days: TEST_FUN_DAYS.to_vec(),
+            fun_weeks: TEST_FUN_WEEKS.to_vec(),
         };
-        
+
         //2010-01-02T03:04:05
         let date_start = Utc.ymd(2010, 1, 2).and_hms(3, 4, 5);
-        
+
         //2041-09-10T04:50:45
         let date_expected_1_000_d_000_000_s = Utc.ymd(2041, 9, 10).and_hms(4, 50, 45);
-       
+
         //Sunday, 30 October 2011, 03:04:05
         let date_expected_666_d = Utc.ymd(2011, 10, 30).and_hms(3, 4, 5);
         //Friday, 28 September 2012, 03:04:05
@@ -301,10 +315,10 @@ mod tests {
         let date_expected_666_w = Utc.ymd(2022, 10, 8).and_hms(3, 4, 5);
         //Saturday, 3 March 2029, 03:04:05
         let date_expected_1_000_w = Utc.ymd(2029, 3, 3).and_hms(3, 4, 5);
-        
+
         //when
         let vec = date_service.find_anniversaries_from_date(date_start, None);
-        
+
         //then
         assert_eq!(vec[0].date, date_expected_1_000_d_000_000_s);
 
@@ -320,45 +334,45 @@ mod tests {
     fn finding_anniversaries_from_date_past() {
         //given
         let now: DateTime<Utc> = Utc::now();
-        let date_service = DateService{
-            now, 
-            fun_seconds: TEST_FUN_SECONDS, 
-            fun_days: TEST_FUN_DAYS, 
-            fun_weeks: TEST_FUN_WEEKS, 
+        let date_service = DateService {
+            now,
+            fun_seconds: TEST_FUN_SECONDS.to_vec(),
+            fun_days: TEST_FUN_DAYS.to_vec(),
+            fun_weeks: TEST_FUN_WEEKS.to_vec(),
         };
         let date_now = Utc.ymd(2020, 1, 2).and_hms(3, 4, 5);
-        
+
         //2010-01-02T03:04:05
         let date_start = Utc.ymd(2010, 1, 2).and_hms(3, 4, 5);
-        
+
         //when
         let vec = date_service.find_anniversaries_from_date(date_start, Some(true));
-        
-        //then
-        vec.into_iter().for_each(|a| assert_eq!(a.date.lt(&date_now), true));
-    }
 
+        //then
+        vec.into_iter()
+            .for_each(|a| assert_eq!(a.date.lt(&date_now), true));
+    }
 
     #[test]
     fn finding_anniversaries_from_date_future() {
         //given
         let now: DateTime<Utc> = Utc::now();
-        let date_service = DateService{
-            now, 
-            fun_seconds: TEST_FUN_SECONDS, 
-            fun_days: TEST_FUN_DAYS, 
-            fun_weeks: TEST_FUN_WEEKS, 
+        let date_service = DateService {
+            now,
+            fun_seconds: TEST_FUN_SECONDS.to_vec(),
+            fun_days: TEST_FUN_DAYS.to_vec(),
+            fun_weeks: TEST_FUN_WEEKS.to_vec(),
         };
         let date_now = Utc.ymd(2020, 1, 2).and_hms(3, 4, 5);
-        
+
         //2010-01-02T03:04:05
         let date_start = Utc.ymd(2010, 1, 2).and_hms(3, 4, 5);
-        
+
         //when
         let vec = date_service.find_anniversaries_from_date(date_start, Some(false));
-        
-        //then
-        vec.into_iter().for_each(|a| assert_eq!(a.date.gt(&date_now), true));
-    }
 
+        //then
+        vec.into_iter()
+            .for_each(|a| assert_eq!(a.date.gt(&date_now), true));
+    }
 }
