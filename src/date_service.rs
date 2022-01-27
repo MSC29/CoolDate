@@ -2,20 +2,6 @@ use chrono::{DateTime, Duration, Utc};
 
 use crate::entities::anniversary::Anniversary;
 
-/// The number of nanoseconds in a microsecond.
-const NANOS_PER_MICRO: i32 = 1000;
-/// The number of nanoseconds in a millisecond.
-const NANOS_PER_MILLI: i32 = 1000_000;
-/// The number of nanoseconds in seconds.
-const NANOS_PER_SEC: i32 = 1_000_000_000;
-/// The number of microseconds per second.
-const MICROS_PER_SEC: i64 = 1000_000;
-/// The number of milliseconds per second.
-const MILLIS_PER_SEC: i64 = 1000;
-/// The number of seconds in a minute.
-const SECS_PER_MINUTE: i64 = 60;
-/// The number of seconds in an hour.
-const SECS_PER_HOUR: i64 = 3600;
 /// The number of (non-leap) seconds in days.
 const SECS_PER_DAY: i64 = 86400;
 /// The number of (non-leap) seconds in a week.
@@ -77,7 +63,7 @@ impl DateService {
         for sec in self.fun_anniversaries_count.iter() {
             if let Some(sec64) = sec.checked_mul(1000) {
                 if sec64 < i64::MIN || sec64 > i64::MAX {
-                    println!("seconds out of range");
+                    println!("Seconds out of range");
                     continue;
                 }
 
@@ -90,7 +76,7 @@ impl DateService {
                     println!("Overflow calculating seconds from {}", sec);
                 }
             } else {
-                println!("too many milliseconds in seconds");
+                println!("Too many milliseconds in seconds");
             }
         }
 
@@ -103,7 +89,7 @@ impl DateService {
         for day in self.fun_anniversaries_count.iter() {
             if let Some(day64) = day.checked_mul(SECS_PER_DAY * 1000) {
                 if day64 < i64::MIN || day64 > i64::MAX {
-                    println!("days out of range");
+                    println!("Days out of range");
                     continue;
                 }
 
@@ -116,7 +102,7 @@ impl DateService {
                     println!("Overflow calculating days from {}", day);
                 }
             } else {
-                println!("too many milliseconds in days");
+                println!("Too many milliseconds in days");
             }
         }
 
@@ -129,7 +115,7 @@ impl DateService {
         for week in self.fun_anniversaries_count.iter() {
             if let Some(week64) = week.checked_mul(SECS_PER_WEEK * 1000) {
                 if week64 < i64::MIN || week64 > i64::MAX {
-                    println!("weeks out of range");
+                    println!("Weeks out of range");
                     continue;
                 }
 
@@ -142,7 +128,7 @@ impl DateService {
                     println!("Overflow calculating weeks from {}", week);
                 }
             } else {
-                println!("too many milliseconds in weeks");
+                println!("Too many milliseconds in weeks");
             }
         }
 

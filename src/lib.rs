@@ -54,7 +54,6 @@ const FUN_ANNIVERSARIES_COUNT: [i64; 44] = [
 ];
 
 pub fn find_anniversaries_future(date_str: &str) -> Vec<Anniversary> {
-    println!("find_anniversaries_future");
     let now: DateTime<Utc> = Utc::now();
     let date_service = DateService {
         now,
