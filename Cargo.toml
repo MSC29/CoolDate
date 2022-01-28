@@ -1,22 +1,23 @@
 [package]
-name = "cool_date"
-version = "0.0.1"
+name = "funniversaries"
+version = "0.0.5"
 authors = ["Maël Sicard-Cras <mael.sicardcras@gmail.com>"]
-description = "Cool Date generator library in Rust"
+description = "Fun Anniversaries generator library in Rust"
 edition = "2018"
 license = "Apache-2.0/MIT"
-homepage = "https://github.com/MSC29/CoolDate"
-repository = "https://github.com/MSC29/CoolDate"
-documentation = "https://github.com/MSC29/CoolDate"
+homepage = "https://github.com/MSC29/funniversaries"
+repository = "https://github.com/MSC29/funniversaries"
+documentation = "https://github.com/MSC29/funniversaries"
 readme = "README.md"
-keywords = ["date", "time", "calendar", "fun"]
+keywords = ["date", "time", "calendar", "fun", "anniversary"]
 categories = ["date-and-time"]
 
 [lib]
-name = "foo"    
+name = "funniversaries_lib"
 path = "src/lib.rs"
 edition = "2018"
 crate-type = ["lib"]
 
 [dependencies]
-chrono = "0.4"
+chrono = { version = "0.4", features = ["serde"] }
+serde = { version = "1.0", features = ["derive"] }

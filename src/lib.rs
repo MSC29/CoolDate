@@ -1,13 +1,68 @@
-pub fn public_function() {
-    println!("Cool Date Lib");
-}
+use chrono::{DateTime, Utc};
+use entities::anniversary::Anniversary;
 
-fn private_function() {
-    println!("sub routine");
-}
+use crate::date_service::DateService;
 
-pub fn indirect_access() {
-    print!("Cool Date API");
+mod date_service;
+mod entities;
 
-    private_function();
+const FUN_ANNIVERSARIES_COUNT: [i64; 44] = [
+    42,
+    314,
+    12345,
+    123456,
+    1234567,
+    12345678,
+    123456789,
+    9876543210,
+    876543210,
+    76543210,
+    6543210,
+    543210,
+    100,
+    1000,
+    10000,
+    100000,
+    1000000,
+    10000000,
+    100000000,
+    1000000000,
+    10000000000,
+    100000000000,
+    1000000000000,
+    111,
+    1111,
+    11111,
+    111111,
+    1111111,
+    11111111,
+    111111111,
+    1111111111,
+    11111111111,
+    111111111111,
+    1111111111111,
+    11111111111111,
+    333,
+    4444,
+    55555,
+    666,
+    666666,
+    777,
+    7777777,
+    88888888,
+    999999999,
+];
+
+pub fn find_anniversaries_future(date_str: &str) -> Vec<Anniversary> {
+    let now: DateTime<Utc> = Utc::now();
+    let date_service = DateService {
+        now,
+        fun_anniversaries_count: FUN_ANNIVERSARIES_COUNT.to_vec(),
+    };
+
+    let date = DateTime::parse_from_rfc3339(date_str);
+    match date {
+        Ok(d) => date_service.find_anniversaries_from_date(d.with_timezone(&Utc), Some(false)),
+        Err(e) => panic!("error converting date: {}", e),
+    }
 }
