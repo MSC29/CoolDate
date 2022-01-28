@@ -1,8 +1,8 @@
 [package]
 name = "funniversaries"
-version = "0.0.5"
+version = "0.0.1"
 authors = ["Maël Sicard-Cras <mael.sicardcras@gmail.com>"]
-description = "Fun Anniversaries generator library in Rust"
+description = "Fun Anniversaries generator library"
 edition = "2018"
 license = "Apache-2.0/MIT"
 homepage = "https://github.com/MSC29/funniversaries"
@@ -13,7 +13,7 @@ keywords = ["date", "time", "calendar", "fun", "anniversary"]
 categories = ["date-and-time"]
 
 [lib]
-name = "funniversaries_lib"
+name = "funniversaries"
 path = "src/lib.rs"
 edition = "2018"
 crate-type = ["lib"]
