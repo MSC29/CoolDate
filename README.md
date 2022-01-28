@@ -1,21 +1,38 @@
-# CoolDate
+# Funniversaries
 
-Cool Date rust lib
+Fun Anniversaries generator library in Rust
 
-### dev
+## What does it do?
 
-src/lib.rs is the lib
-test/test.rs is a just a quick & dirty check whether the compiled lib runs properly
+Start from a given input date and find out on what date will the 12345 days or 1_000_000_000 seconds anniversary will be celebrated, for example.
 
-### build lib
+### future anniversaries
 
-```rust
-cargo build --release
-```
+input a date, find next anniversaries
+e.g. birth day & find 4444th day, after today if past date, after date if future date
+e.g. couple together date & find 666th day together, after today if past date, after date if future date
 
-### create testable executable
+### input a date, find past anniversaries
 
-```rust
-cd test && rustc test.rs --extern lib=../target/release/libfoo.rlib && cd ..
-./test/test
-```
+e.g. birth day & find 4444th day, before today
+e.g. couple together date & find 666th day together, before today
+
+### input a date, find all anniversaries
+
+TODO
+
+### input a date, find all anniversaries, filter by Unit
+
+TODO
+
+### input a date, find all anniversaries, filter by Count
+
+TODO
+
+### input a date, find all anniversaries, filter by Unit & Count
+
+TODO
+
+### working hours
+
+input a date, input the number of hours per day, input number of days per week

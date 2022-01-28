@@ -13,3 +13,5 @@ Cargo.lock
 
 # temporary exec to test lib run
 test/test
+
+.vscode
