@@ -1,13 +1,13 @@
 [package]
 name = "funniversaries"
-version = "0.0.3"
+version = "0.0.4"
 authors = ["Maël Sicard-Cras <mael.sicardcras@gmail.com>"]
 description = "Fun Anniversaries generator library"
 edition = "2018"
 license = "Apache-2.0/MIT"
-homepage = "https://github.com/MSC29/funniversaries"
-repository = "https://github.com/MSC29/funniversaries"
-documentation = "https://github.com/MSC29/funniversaries"
+homepage = "https://github.com/MSC29/funniversaries-lib"
+repository = "https://github.com/MSC29/funniversaries-lib"
+documentation = "https://github.com/MSC29/funniversaries-lib"
 readme = "README.md"
 keywords = ["date", "time", "calendar", "fun", "anniversary"]
 categories = ["date-and-time"]
