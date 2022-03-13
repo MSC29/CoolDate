@@ -1,6 +1,6 @@
 [package]
 name = "funniversaries"
-version = "0.0.2"
+version = "0.0.3"
 authors = ["Maël Sicard-Cras <mael.sicardcras@gmail.com>"]
 description = "Fun Anniversaries generator library"
 edition = "2018"
