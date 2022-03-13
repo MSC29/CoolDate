@@ -61,12 +61,7 @@ impl DateService {
         let mut anniversaries: Vec<Anniversary> = vec![];
 
         for sec in self.fun_anniversaries_count.iter() {
-            if let Some(sec64) = sec.checked_mul(1000) {
-                if sec64 < i64::MIN || sec64 > i64::MAX {
-                    println!("Seconds out of range");
-                    continue;
-                }
-
+            if let Some(_) = sec.checked_mul(1000) {
                 let duration = Duration::seconds(sec.to_owned() as i64);
                 let date = date.checked_add_signed(duration);
                 if let Some(d) = date {
@@ -87,12 +82,7 @@ impl DateService {
         let mut anniversaries: Vec<Anniversary> = vec![];
 
         for day in self.fun_anniversaries_count.iter() {
-            if let Some(day64) = day.checked_mul(SECS_PER_DAY * 1000) {
-                if day64 < i64::MIN || day64 > i64::MAX {
-                    println!("Days out of range");
-                    continue;
-                }
-
+            if let Some(_) = day.checked_mul(SECS_PER_DAY * 1000) {
                 let duration = Duration::days(day.to_owned() as i64);
                 let date = date.checked_add_signed(duration);
                 if let Some(d) = date {
@@ -113,12 +103,7 @@ impl DateService {
         let mut anniversaries: Vec<Anniversary> = vec![];
 
         for week in self.fun_anniversaries_count.iter() {
-            if let Some(week64) = week.checked_mul(SECS_PER_WEEK * 1000) {
-                if week64 < i64::MIN || week64 > i64::MAX {
-                    println!("Weeks out of range");
-                    continue;
-                }
-
+            if let Some(_) = week.checked_mul(SECS_PER_WEEK * 1000) {
                 let duration = Duration::weeks(week.to_owned() as i64);
                 let date = date.checked_add_signed(duration);
                 if let Some(d) = date {
