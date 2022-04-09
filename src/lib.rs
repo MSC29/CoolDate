@@ -4,7 +4,7 @@ use entities::anniversary::Anniversary;
 use crate::date_service::DateService;
 
 mod date_service;
-mod entities;
+pub mod entities;
 
 const FUN_ANNIVERSARIES_COUNT: [i64; 44] = [
     42,
@@ -54,6 +54,18 @@ const FUN_ANNIVERSARIES_COUNT: [i64; 44] = [
 ];
 
 pub fn find_anniversaries_future(date_str: &str) -> Vec<Anniversary> {
+    find_anniversaries(date_str, Some(false))
+}
+
+pub fn find_anniversaries_past(date_str: &str) -> Vec<Anniversary> {
+    find_anniversaries(date_str, Some(true))
+}
+
+pub fn find_anniversaries_all(date_str: &str) -> Vec<Anniversary> {
+    find_anniversaries(date_str, None)
+}
+
+fn find_anniversaries(date_str: &str, is_past: Option<bool>) -> Vec<Anniversary> {
     let now: DateTime<Utc> = Utc::now();
     let date_service = DateService {
         now,
@@ -62,7 +74,7 @@ pub fn find_anniversaries_future(date_str: &str) -> Vec<Anniversary> {
 
     let date = DateTime::parse_from_rfc3339(date_str);
     match date {
-        Ok(d) => date_service.find_anniversaries_from_date(d.with_timezone(&Utc), Some(false)),
+        Ok(d) => date_service.find_anniversaries_from_date(d.with_timezone(&Utc), is_past),
         Err(e) => panic!("error converting date: {}", e),
     }
 }
